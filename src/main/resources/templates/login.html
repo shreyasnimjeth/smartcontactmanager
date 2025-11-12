@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::section})">
+<head>
+	<meta charset="UTF-8" />
+	<title></title>
+</head>
+<body>
+		
+	<section class="vh-100" style="background-color: #e2e2e2;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5" >
+        <div class="card shadow-2-strong" style="border-radius: 1rem; background-color: #D3F0D1">
+          <div class="card-body p-5 text-center">
+
+		<form th:action="@{/dologin}" action="#" class="form" method="post">
+		
+			<div th:if="${param.error}" class="alert alert-danger">
+				Invalid username and password !
+			</div>
+			
+			<div th:if="${param.logout}" class="alert alert-success">
+				You have been logged out.
+			</div>
+			
+			<div th:if="${param.change}" class="alert alert-success">
+				<p th:text="${param.change}"></p>
+			</div>
+			
+            <h3 class="mb-5">Login</h3>
+
+            <div data-mdb-input-init class="form-outline mb-4">
+              <input type="text" name="username" id="typeEmailX-2" class="form-control form-control-lg" />
+              <label class="form-label" for="typeEmailX-2">Username</label>
+            </div>
+
+            <div data-mdb-input-init class="form-outline mb-4">
+              <input type="password" name="password" id="typePasswordX-2" class="form-control form-control-lg" />
+              <label class="form-label" for="typePasswordX-2">Password</label>
+            </div>
+
+            <!-- Checkbox -->
+            <div class="form-check d-flex justify-content-start mb-4">
+              <input class="form-check-input" type="checkbox" value="" id="form1Example3" />
+              <label class="form-check-label" for="form1Example3"> Remember password </label>
+            </div>
+
+            <button data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
+
+            <hr class="my-4">
+
+			<div>
+            
+            <a href="/signup/" data-mdb-button-init data-mdb-ripple-init class="btn btn-lg btn-block btn-primary mb-2" style="background-color: #3b5998;"
+              type="submit"><i class="fab fa-facebook-f me-2"></i>Register Here</a>
+			
+			</div>
+			
+			<div class="container">
+			
+			<a th:href="@{/forgot}">Forgot Password</a>
+			
+			</div>
+			
+			
+		</form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+	
+</body>
+</html>
