@@ -117,7 +117,7 @@ public class UserController {
 
 				contact.setImage(file.getOriginalFilename());
 
-				File saveFile = new ClassPathResource("classes/static/img").getFile();
+				File saveFile = new ClassPathResource("static/img").getFile();
 
 				Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + file.getOriginalFilename());
 
