@@ -9,6 +9,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
@@ -92,63 +93,113 @@ public class UserController {
 
 		return "normal/add_contact_form";
 	}
-
-	// processsing add contact form
+	
+	//chat gpt
 	@PostMapping("/process-contact")
-	public String processContact(@ModelAttribute Contact contact, @RequestParam("profileImage") MultipartFile file,
-			Principal principal, HttpSession session) {
+	public String processContact(@ModelAttribute Contact contact,
+	                             @RequestParam("profileImage") MultipartFile file,
+	                             Principal principal,
+	                             HttpSession session) {
 
-		try {
+	    try {
+	        String name = principal.getName();
+	        User user = this.userRepositery.getUserByUserName(name);
 
-			String name = principal.getName();
-			User user = this.userRepositery.getUserByUserName(name);
+	        // create folder inside "target/uploads"
+	        String uploadDir = new File(System.getProperty("user.dir"), "target/uploads").getAbsolutePath();
+	        File folder = new File(uploadDir);
+	        if (!folder.exists()) {
+	            folder.mkdirs();
+	            System.out.println("Created uploads folder at: " + uploadDir);
+	        }
 
-			// processing and uploading file......
+	        if (file.isEmpty()) {
+	            // use default image
+	            contact.setImage("contact.png");
+	            System.out.println("File empty, using default image");
+	        } else {
+	            // unique filename to avoid conflicts
+	            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+	            Path path = Paths.get(uploadDir, fileName);
 
-			if (file.isEmpty()) {
+	            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 
-				// is there any empty file
-				System.out.println("File is empty");
+	            contact.setImage(fileName);
+	            System.out.println("Image uploaded to: " + path);
+	        }
 
-				contact.setImage("contact.png");
+	        // save contact
+	        contact.setUser(user);
+	        user.getContacts().add(contact);
+	        this.userRepositery.save(user);
 
-			} else {
-				// upload file to folder and update name to contact
+	        session.setAttribute("message", new Message("Your contact is added, add more!", "success"));
 
-				contact.setImage(file.getOriginalFilename());
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        session.setAttribute("message", new Message("Something went wrong, try again!", "danger"));
+	    }
 
-				File saveFile = new ClassPathResource("static/img").getFile();
-
-				Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + file.getOriginalFilename());
-
-				Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-
-				System.out.println("Image is uploaded");
-			}
-
-			contact.setUser(user);
-			user.getContacts().add(contact);
-
-			this.userRepositery.save(user);
-
-			System.out.println(contact);
-			System.out.println("added to database");
-
-			// message success
-
-			session.setAttribute("message", new Message("Your contact is added, add more", "success"));
-
-		} catch (Exception e) {
-			System.out.println("error " + e.getMessage());
-			e.printStackTrace();
-
-			// message error
-
-			session.setAttribute("message", new Message("Some went wrong, try again", "danger"));
-		}
-
-		return "normal/add_contact_form";
+	    return "normal/add_contact_form";
 	}
+
+
+//	// processsing add contact form
+//	@PostMapping("/process-contact")
+//	public String processContact(@ModelAttribute Contact contact, @RequestParam("profileImage") MultipartFile file,
+//			Principal principal, HttpSession session) {
+//
+//		try {
+//
+//			String name = principal.getName();
+//			User user = this.userRepositery.getUserByUserName(name);
+//
+//			// processing and uploading file......
+//
+//			if (file.isEmpty()) {
+//
+//				// is there any empty file
+//				System.out.println("File is empty");
+//
+//				contact.setImage("contact.png");
+//
+//			} else {
+//				// upload file to folder and update name to contact
+//
+//				contact.setImage(file.getOriginalFilename());
+//
+//				File saveFile = new ClassPathResource("static/img").getFile();
+//
+//				Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + file.getOriginalFilename());
+//
+//				Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+//
+//				System.out.println("Image is uploaded");
+//			}
+//
+//			contact.setUser(user);
+//			user.getContacts().add(contact);
+//
+//			this.userRepositery.save(user);
+//
+//			System.out.println(contact);
+//			System.out.println("added to database");
+//
+//			// message success
+//
+//			session.setAttribute("message", new Message("Your contact is added, add more", "success"));
+//
+//		} catch (Exception e) {
+//			System.out.println("error " + e.getMessage());
+//			e.printStackTrace();
+//
+//			// message error
+//
+//			session.setAttribute("message", new Message("Some went wrong, try again", "danger"));
+//		}
+//
+//		return "normal/add_contact_form";
+//	}
 
 	// show contacts handler
 	// per page 5[n] contact
