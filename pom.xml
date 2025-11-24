@@ -38,6 +38,8 @@
 			<version>1.6.2</version>
 		</dependency>
 
+
+		
 		<!-- https://mvnrepository.com/artifact/jakarta.mail/jakarta.mail-api
 		<dependency>
 			<groupId>jakarta.mail</groupId>
