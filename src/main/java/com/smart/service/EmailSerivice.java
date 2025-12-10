@@ -21,7 +21,7 @@ public class EmailSerivice {
 		// logic
 	   // smtp properties
 		
-		String from = "shreyasnimje865@gmail.com";
+		String from = "xyz865@gmail.com";
 
 		Properties properties = new Properties();
 		properties.put("mail.smtp.auth", true);
@@ -29,8 +29,8 @@ public class EmailSerivice {
 		properties.put("mail.smtp.port", "587");
 		properties.put("mail.smtp.host", "smtp.gmail.com");
 
-		String username = "shreyasnimje865";
-		String password = "posl pwql rlxa rrod";
+		String username = "xyz865";
+		String password = "**** **** **** ****";
 		
 		//String password = "***********";
 
