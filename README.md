@@ -1,6 +1,8 @@
 # 📱 Smart Contact Manager
 A modern full-stack Spring Boot web application that helps users securely save, organize, and manage their personal contacts online — with image uploads, live search, OTP email verification, and Razorpay payment integration. Designed with a clean UI and optimized workflows for seamless contact management.
 
+Smart Contact Manager built with Spring Boot — features secure login, OTP email verification, contact CRUD, image upload, live search, pagination, Razorpay payments, and a responsive dashboard.
+
 ## 🌐 GitHub Repository
 👉 https://github.com/shreyasnimjeth/smartcontactmanager.git
 
@@ -74,7 +76,3 @@ Visit → http://localhost:8080
 **Shreyas Nimje**  
 GitHub: https://github.com/shreyasnimjeth  
 India  
-
-## ⭐ GitHub Description
-Smart Contact Manager built with Spring Boot — features secure login, OTP email verification, contact CRUD, image upload, live search, pagination, Razorpay payments, and a responsive dashboard.
-
